@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int drawLeaves(int levels);
+void drawLeafs(int levels);
 void drawTrunk(int trunkLoc);
 void fileTree(FILE *dest, int length);
 void fileTrunk(FILE *dest, int length);
@@ -39,6 +39,7 @@ int main(int argc, char *argv[]){
         }
         // else the argument is a file name, open the file
         else{
+            // open up given file name
             file = fopen(argv[index], "a+");
             //acknowledge we received a file
             gotFile = 1;
@@ -62,24 +63,35 @@ int main(int argc, char *argv[]){
 
         // debugging tool
         // printf("not given a file %d \n", numLeafs);
-        
-        drawLeaves(numLeafs);
+
+        // since we don't have file to write to, print out tree in terminal
+        drawLeafs(numLeafs);
+        // the trunk location is x2 the number of leafs (arbitrary loc defined in drawLeafs)
         int trunkLoc = numLeafs * 2;
+        // printing out trunk in terminal
         drawTrunk(trunkLoc);
     }
+    // else we have a file name to write to
     else{
-        printf("given a file\n");
+        //debugging tool
+        // printf("given a file\n");
+
+        // writing tree on given file
         fileTree(file, numLeafs);
-        
-        fileTrunk(file, numLeafs * 2);
+        // the trunk location is x2 the number of leafs (arbitrary loc defined in drawLeafs)
+        int trunkLoc = numLeafs * 2;
+        // writing tree on given file
+        fileTrunk(file, trunkLoc);
 
     }
-    printf("we are done\n");
+
+    // debugging helper
+    // printf("we are done\n");
 
 }
 
 // method will draw the leaves and return the location of where to put the trunk
-int drawLeaves(int layers){
+void drawLeafs(int layers){
     // the first layer will have 1 star, then +2 for each layer
     int numStars = 1;
     // need to know where to place '*' to get tree shape
@@ -103,11 +115,11 @@ int drawLeaves(int layers){
         }
         // next round will have +2 stars
         numStars += 2;
+        // reset location on next line
         putchar('\n');
 
     }
 
-    return leafLoc;
 }
 
 void drawTrunk(int trunkLoc){
@@ -124,7 +136,6 @@ void drawTrunk(int trunkLoc){
     }
 
 
-    return;
 }
 
 void fileTree(FILE *dest, int layers){
