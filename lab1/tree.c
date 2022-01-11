@@ -15,32 +15,41 @@ int main(int argc, char *argv[]){
     //TODO should we overwrite file or add to it?
     FILE *file;
 
+    int gotNum = 0;
     
     
     // go through each argument, see if it's a file name or tree height
     int index;
     for(index = 1; index < argc; index ++){
+        
+        if(gotNum == 0){
         // check if argument is a number
         numLeafs = atoi(argv[index]);
-
+        // printf("numLeafs after atoi is now %d\n", numLeafs);
+        if(numLeafs != 0){
+ gotNum = 1;
+        }
+       
+        }
         // print statement that helps with debugging
         // printf("argument given %d\n", numLeafs);
 
         // if the argument is number ensure it fits constraints (between 1-10)
-        if(argv[index] == "0" || numLeafs != 0 ){
+        if(argv[index] == "0" || (gotNum == 1  && atoi(argv[index]) != 0) ){
             // if bad number given, prompt for better input
-            while (numLeafs < 1 || numLeafs > 10){
-            // prompt user for number between 1 - 10
-            printf("the number given needs to be between 1 -\n");
-            // scan in number from terminal input
-            scanf("%d", &numLeafs);
-            }
+            // while (numLeafs < 1 || numLeafs > 10){
+            // // prompt user for number between 1 - 10
+            // printf("Error, the number given needs to be between 1 and 10\n");
+            // // scan in number from terminal input
+            // scanf("%d", &numLeafs);
+            // }
+            // printf("we were given a number\n");
             
         }
         // else the argument is a file name, open the file
         else{
             // open up given file name
-            file = fopen(argv[index], "a+");
+            file = fopen(argv[index], "w+");
             //acknowledge we received a file
             gotFile = 1;
         }
@@ -51,11 +60,16 @@ int main(int argc, char *argv[]){
 
 
     // if number was never given in arguments, prompt for one
-    while (numLeafs < 1 || numLeafs > 10){
+    while (numLeafs == 0){
             // prompt user for number between 1 - 10
             printf("how many leaves does the tree have? choose number between 1 and 10\n");
             // read in number value from terminal input
             scanf("%d", &numLeafs);
+    }
+
+    //setting the max leafs to be 10 lines
+    if(numLeafs > 10){
+        numLeafs = 10;
     }
 
     // if we didn't receive file, print out tree in terminal
@@ -82,6 +96,7 @@ int main(int argc, char *argv[]){
         int trunkLoc = numLeafs * 2;
         // writing tree on given file
         fileTrunk(file, trunkLoc);
+        fclose(file);
 
     }
 
@@ -92,6 +107,7 @@ int main(int argc, char *argv[]){
 
 // method will draw the leaves and return the location of where to put the trunk
 void drawLeafs(int layers){
+   
     // the first layer will have 1 star, then +2 for each layer
     int numStars = 1;
     // need to know where to place '*' to get tree shape
@@ -140,7 +156,7 @@ void drawTrunk(int trunkLoc){
 
 void fileTree(FILE *dest, int layers){
     // fprintf(dest, "something");
-
+  
     // the first layer will have 1 star, then +2 for each layer
     int numStars = 1;
     // need to know where to place '*' to get tree shape
