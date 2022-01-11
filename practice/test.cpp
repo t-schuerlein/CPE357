@@ -1,7 +1,12 @@
-
 #include <stdio.h>
+#include <string.h>
+#include <iostream>
 
-struct Class{
+using namespace std;
+
+
+class math{
+        
     int i;
     char c;
 };
@@ -22,9 +27,12 @@ int main(){
         int i;
         char c;
     };
-    
 
-    printf("size is %d", sizeof(school) );
+    math v;
+    
+    int size = sizeof(v);
+
+    printf("size is %d\n", size );
 
     printf("%d\n", arr[1]);
     printf("I am alive\n");
